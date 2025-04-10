@@ -1,6 +1,8 @@
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using SmartStore.Application.Features.Products.Handlers;
 using SmartStore.Application.Features.Products.Queries;
 using SmartStore.Domain.Entities;
@@ -17,6 +19,15 @@ builder.Services.AddDbContext<SmartStoreContext>(options =>
 builder.Services.AddRepositories();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<GetAllProductsHandler>());
+
+var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", false, true)
+                .Build();
+
+Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(builder.Configuration)
+                .Enrich.FromLogContext()
+                .CreateLogger();
 
 var app = builder.Build();
 

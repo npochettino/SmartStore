@@ -28,7 +28,6 @@ namespace SmartStore.Infrastructure.Repositories
                 .FirstOrDefaultAsync(p => p.Name == name);
         }
 
-        // IRepository<Product> implementation
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             return await _context.Products.ToListAsync();
