@@ -1,5 +1,8 @@
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SmartStore.Application.Features.Products.Handlers;
+using SmartStore.Application.Features.Products.Queries;
 using SmartStore.Domain.Entities;
 using SmartStore.Domain.Interfaces;
 using SmartStore.Infrastructure;
@@ -12,16 +15,16 @@ builder.Services.AddDbContext<SmartStoreContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
 
 builder.Services.AddRepositories();
-
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssemblyContaining<GetAllProductsHandler>());
 
 var app = builder.Build();
 
 // Minimal API Endpoints
-app.MapGet("/products", async ([FromServices] IRepository<Product> repo) =>
+app.MapGet("/products", async (IMediator mediator) =>
 {
-    
-    var products = await repo.GetAllAsync();
-    return Results.Ok(products);
+    var result = await mediator.Send(new GetAllProductsQuery());
+    return Results.Ok(result);
 });
 
 app.MapGet("/products/{id:Guid}", async (Guid id, [FromServices] IRepository<Product> repo) =>
