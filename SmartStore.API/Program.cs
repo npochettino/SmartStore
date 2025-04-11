@@ -14,12 +14,6 @@ builder.Services.AddDbContext<SmartStoreContext>(options =>
 builder.Services.AddRepositories();
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<GetAllProductsQueryHandler>());
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<GetProductByIdQueryHandler>());
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<CreateProductCommandHandler>());
-builder.Services.AddMediatR(cfg =>
-    cfg.RegisterServicesFromAssemblyContaining<UpdateProductCommandHandler>());
 
 var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", false, true)

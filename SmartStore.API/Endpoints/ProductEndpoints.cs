@@ -39,12 +39,10 @@ namespace SmartStore.API.Endpoints
                 return Results.Ok(result);
             });
 
-            endpoints.MapDelete("/products/{id:Guid}", async (Guid id, [FromServices] IRepository<Product> repo) =>
+            endpoints.MapDelete("/products/{id:guid}", async (Guid id, IMediator mediator) =>
             {
-                var existing = await repo.GetByIdAsync(id);
-                if (existing is null) return Results.NotFound();
-
-                return Results.Ok(repo.RemoveAsync(existing));
+                var deleted = await mediator.Send(new DeleteProductCommand(id));
+                return deleted ? Results.Ok() : Results.NotFound();
             });
 
             return endpoints;
