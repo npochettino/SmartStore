@@ -10,9 +10,9 @@ namespace SmartStore.Infrastructure.Data
             {
                 context.Products.AddRange(
                 [
-                new Product { Id = Guid.NewGuid(), Name = "Laptop", Price = 999.99m, SalesCount = 10 },
-                new Product { Id = Guid.NewGuid(), Name = "Smartphone", Price = 699.99m, SalesCount = 20 },
-                new Product { Id = Guid.NewGuid(), Name = "Headphones", Price = 199.99m, SalesCount = 5 }
+                new Product(Guid.NewGuid(), "Laptop", 999.99m, true),
+                new Product(Guid.NewGuid(), "Smartphone", 699.99m, true),
+                new Product(Guid.NewGuid(), "Headphones", 199.99m, true)
             ]);
 
                 await context.SaveChangesAsync();

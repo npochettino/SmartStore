@@ -1,17 +1,16 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using SmartStore.Application.Features.Products.Queries;
 using SmartStore.Domain.Entities;
 using SmartStore.Domain.Interfaces;
 
-namespace SmartStore.Application.Features.Products.Handlers
+namespace SmartStore.Application.Features.Products.Queries
 {
-    public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
+    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
     {
         private readonly IProductRepository _repository;
-        private readonly ILogger<GetAllProductsHandler> _logger;
+        private readonly ILogger<GetAllProductsQueryHandler> _logger;
 
-        public GetAllProductsHandler(IProductRepository repository, ILogger<GetAllProductsHandler> logger)
+        public GetAllProductsQueryHandler(IProductRepository repository, ILogger<GetAllProductsQueryHandler> logger)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
