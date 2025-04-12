@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Server.Kestrel.Core;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using SmartStore.API.Endpoints;
-using SmartStore.Application.Features.Products.Commands;
 using SmartStore.Application.Features.Products.Queries;
 using SmartStore.GrpcService.Services;
 using SmartStore.Infrastructure;
@@ -13,23 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<SmartStoreContext>(options =>
     options.UseInMemoryDatabase("InMemoryDb"));
 
+// Add services to the container.
+builder.Services.AddGrpc();
 builder.Services.AddRepositories();
+
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssemblyContaining<GetAllProductsQueryHandler>());
 
-var configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", false, true)
-                .Build();
-
-Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(builder.Configuration)
-                .Enrich.FromLogContext()
-                .CreateLogger();
-
-
 var app = builder.Build();
 
-app.MapProductEndpoints();
+// Configure the HTTP request pipeline.
+app.MapGrpcService<ProductService>();
+
+app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
 
 using (var scope = app.Services.CreateScope())
 {
